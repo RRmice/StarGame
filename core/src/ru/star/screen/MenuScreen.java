@@ -36,7 +36,9 @@ public class MenuScreen extends BaseScreen {
         spaceShip = new Texture("spShip.jpg");
 
         //Инициализируем корабль в центр экрана
-        pos = new Vector2((Gdx.graphics.getWidth()- 32) / 2 , (Gdx.graphics.getHeight() - 32) / 2);
+        pos = new Vector2((Gdx.graphics.getWidth()- (spaceShip.getWidth() / 2)) / 2 ,
+                (Gdx.graphics.getHeight() - (spaceShip.getHeight() / 2)) / 2);
+
         direction = new Vector2(pos);
 
         move = false;
