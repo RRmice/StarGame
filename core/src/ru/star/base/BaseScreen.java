@@ -35,10 +35,12 @@ public abstract class BaseScreen implements Screen, InputProcessor {
         this.glBounds = new Rect(0, 0, 1f, 1f);
         this.worldToGl = new Matrix4();
         this.screenToWorld = new Matrix3();
+
     }
 
     @Override
     public void render(float delta) {
+
 
     }
 
