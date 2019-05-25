@@ -9,22 +9,35 @@ import com.badlogic.gdx.math.Vector2;
 import ru.star.base.BaseScreen;
 import ru.star.math.Rect;
 import ru.star.sprite.Background;
-import ru.star.sprite.BadLogic;
+import ru.star.sprite.PlayerShip;
 
 public class MenuScreen extends BaseScreen {
 
     private Texture bg;
-    private Texture badLogicTexture;
+    private Texture playerShipTexture;
+
     private Background background;
-    private BadLogic badLogic;
+    private PlayerShip playerShip;
+
+    private Vector2 direction;
+    private Vector2 speed;
+    private Vector2 touchPos;
+
+
 
     @Override
     public void show() {
         super.show();
         bg = new Texture("background.jpg");
         background = new Background(new TextureRegion(bg));
-        badLogicTexture = new Texture("badlogic.jpg");
-        badLogic = new BadLogic(new TextureRegion(badLogicTexture));
+
+        playerShipTexture = new Texture("spShip.jpg");
+        playerShip = new PlayerShip(new TextureRegion(playerShipTexture));
+
+        this.direction = new Vector2(0f,0f);
+        this.speed = new Vector2(0.001f, 0.001f);
+        this.touchPos = new Vector2(0f, 0f);
+
     }
 
     @Override
@@ -34,14 +47,26 @@ public class MenuScreen extends BaseScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         background.draw(batch);
-        badLogic.draw(batch);
+        playerShip.draw(batch);
         batch.end();
+
+        playerShip.pos.add(direction);
+
+       // if(playerShip.isMe(touchPos)){
+       //     direction.set(0,0);
+       // }
+
+        if (touchPos.dst(playerShip.pos) <= speed.x){
+            direction.set(0,0);
+            playerShip.pos.set(touchPos);
+        }
+
     }
 
     @Override
     public void dispose() {
         bg.dispose();
-        badLogicTexture.dispose();
+        playerShipTexture.dispose();
         super.dispose();
     }
 
@@ -49,11 +74,17 @@ public class MenuScreen extends BaseScreen {
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
         background.resize(worldBounds);
-        badLogic.resize(worldBounds);
+        playerShip.resize(worldBounds);
     }
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-        return super.touchDown(touch, pointer);
+
+        super.touchDown(touch, pointer);
+
+        touchPos.set(touch);
+        direction.set((new Vector2(touch).sub(playerShip.pos)).nor().scl(speed));
+        return false;
     }
+
 }
