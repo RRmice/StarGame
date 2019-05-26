@@ -18,6 +18,10 @@ public class Sprite extends Rect {
         this.regions[0] = region;
     }
 
+    public Sprite(TextureRegion[] region) {
+        this.regions = region;
+    }
+
     public void draw(SpriteBatch batch) {
         batch.draw(
                 regions[frame],
