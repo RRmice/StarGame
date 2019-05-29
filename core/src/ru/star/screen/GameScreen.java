@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import ru.star.base.BaseScreen;
 import ru.star.math.Rect;
 import ru.star.sprite.Background;
+import ru.star.sprite.PlayerShip;
 import ru.star.sprite.Star;
 
 public class GameScreen extends BaseScreen {
@@ -19,7 +20,13 @@ public class GameScreen extends BaseScreen {
     private Texture bg;
     private Background background;
     private TextureAtlas atlas;
+
     private Star[] starArray;
+    private PlayerShip playerShip;
+
+
+
+
 
     @Override
     public void show() {
@@ -31,6 +38,8 @@ public class GameScreen extends BaseScreen {
         for (int i = 0; i < STAR_COUNT; i++) {
             starArray[i] = new Star(atlas);
         }
+
+        playerShip = new PlayerShip(PlayerShip.getTexture(atlas));
     }
 
     @Override
@@ -43,6 +52,8 @@ public class GameScreen extends BaseScreen {
         for (Star star : starArray) {
             star.update(delta);
         }
+
+        playerShip.update(delta);
     }
 
     private void draw() {
@@ -53,6 +64,9 @@ public class GameScreen extends BaseScreen {
         for (Star star : starArray) {
             star.draw(batch);
         }
+
+        playerShip.draw(batch);
+
         batch.end();
     }
 
@@ -84,11 +98,15 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-        return super.touchDown(touch, pointer);
+        super.touchDown(touch, pointer);
+        playerShip.touchDown(touch, pointer);
+        return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
-        return super.touchUp(touch, pointer);
+        super.touchUp(touch, pointer);
+        playerShip.touchUp(touch, pointer);
+        return false;
     }
 }
