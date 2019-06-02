@@ -29,6 +29,10 @@ public class MainShip extends Sprite {
     private int leftPointer = INVALID_POINTER;
     private int rightPointer = INVALID_POINTER;
 
+    private long shootSpeed;
+    private long lastTimeShoot;
+    private final float  BASE_SHOOT_SPEED = 100;
+
     public MainShip(TextureAtlas atlas, BulletPool bulletPool) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
         this.bulletPool = bulletPool;
@@ -37,6 +41,9 @@ public class MainShip extends Sprite {
         v0 = new Vector2(0.5f, 0);
         bulletV = new Vector2(0, 0.5f);
         bulletPos = new Vector2();
+
+        shootSpeed = (long) BASE_SHOOT_SPEED;
+
     }
 
     @Override
@@ -57,6 +64,11 @@ public class MainShip extends Sprite {
             setLeft(worldBounds.getLeft());
             stop();
         }
+
+        if(System.currentTimeMillis() > (lastTimeShoot + shootSpeed)){
+           shoot();
+        }
+
     }
 
     @Override
@@ -109,9 +121,6 @@ public class MainShip extends Sprite {
                 pressedRight = true;
                 moveRight();
                 break;
-            case Input.Keys.UP:
-                shoot();
-                break;
         }
         return false;
     }
@@ -157,6 +166,8 @@ public class MainShip extends Sprite {
         bulletPos.set(pos);
         bulletPos.y += getHalfHeight();
         bullet.set(this, bulletRegion, bulletPos, bulletV, 0.01f, worldBounds, 1);
+
+        lastTimeShoot = System.currentTimeMillis();
     }
 
 }

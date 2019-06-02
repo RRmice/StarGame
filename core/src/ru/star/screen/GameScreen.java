@@ -1,12 +1,14 @@
 package ru.star.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+import ru.star.Music.BackgroundMusic;
 import ru.star.base.BaseScreen;
 import ru.star.math.Rect;
 import ru.star.pool.BulletPool;
@@ -24,8 +26,9 @@ public class GameScreen extends BaseScreen {
     private Star[] starArray;
 
     private MainShip mainShip;
-
     private BulletPool bulletPool;
+
+    private BackgroundMusic backgroundMusic;
 
     @Override
     public void show() {
@@ -39,6 +42,10 @@ public class GameScreen extends BaseScreen {
         }
         bulletPool = new BulletPool();
         mainShip = new MainShip(atlas, bulletPool);
+
+        backgroundMusic = new BackgroundMusic();
+        backgroundMusic.play();
+
     }
 
     @Override
@@ -88,6 +95,7 @@ public class GameScreen extends BaseScreen {
         bg.dispose();
         atlas.dispose();
         bulletPool.dispose();
+        backgroundMusic.dispose();
         super.dispose();
     }
 
