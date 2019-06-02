@@ -18,7 +18,7 @@ public abstract class BaseScreen implements Screen, InputProcessor {
     private Vector2 touch;
 
     private Rect screenBounds;
-    private Rect worldBounds;
+    protected Rect worldBounds;
     private Rect glBounds;
 
     private Matrix4 worldToGl;
@@ -99,7 +99,7 @@ public abstract class BaseScreen implements Screen, InputProcessor {
 
     @Override
     public boolean keyTyped(char character) {
-        System.out.println("keyTyped keycode = " + character);
+        System.out.println("keyTyped character = " + character);
         return false;
     }
 
