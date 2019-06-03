@@ -10,17 +10,28 @@ import ru.star.pool.BulletPool;
 public class Enemy extends Ship {
 
     public Enemy(BulletPool bulletPool, Sound bulletSound, Rect worldBounds) {
+
         this.bulletPool = bulletPool;
         this.bulletSound = bulletSound;
         this.worldBounds = worldBounds;
         this.v = new Vector2();
         this.v0 = new Vector2();
         this.bulletV = new Vector2();
+
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
+
+       if (getTop() <  worldBounds.getTop()){
+           battleMode = true;
+           this.v.set(v0);
+       } else {
+           battleMode = false;
+           this.v.y += -0.01f;
+       }
+
     }
 
     public void set(
@@ -45,5 +56,6 @@ public class Enemy extends Ship {
         setHeightProportion(height);
         this.hp = hp;
         this.v.set(v0);
+
     }
 }

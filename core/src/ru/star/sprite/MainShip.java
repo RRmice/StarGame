@@ -32,6 +32,8 @@ public class MainShip extends Ship {
         this.damage = 1;
         this.bulletSound = bulletSound;
         this.hp = 100;
+
+        battleMode = true;
     }
 
     @Override
