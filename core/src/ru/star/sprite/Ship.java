@@ -28,21 +28,27 @@ public abstract class Ship extends Sprite {
 
     protected Sound bulletSound;
 
+    protected boolean battleMode;
+
     public Ship(TextureRegion region, int rows, int cols, int frames) {
         super(region, rows, cols, frames);
     }
 
     public Ship() {
+        battleMode = false;
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
         pos.mulAdd(v, delta);
-        reloadTimer += delta;
-        if (reloadTimer >= reloadInterval) {
-            reloadTimer = 0f;
-            shoot();
+
+        if (battleMode) {
+            reloadTimer += delta;
+            if (reloadTimer >= reloadInterval) {
+                reloadTimer = 0f;
+                shoot();
+            }
         }
     }
 

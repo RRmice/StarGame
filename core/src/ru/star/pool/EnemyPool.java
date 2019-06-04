@@ -2,6 +2,8 @@ package ru.star.pool;
 
 import com.badlogic.gdx.audio.Sound;
 
+import java.util.List;
+
 import ru.star.base.SpritesPool;
 import ru.star.math.Rect;
 import ru.star.sprite.Enemy;
@@ -22,4 +24,5 @@ public class EnemyPool extends SpritesPool<Enemy> {
     protected Enemy newObject() {
         return new Enemy(bulletPool, bulletSound, worldBounds);
     }
+
 }
