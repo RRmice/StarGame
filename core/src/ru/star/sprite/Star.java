@@ -43,10 +43,10 @@ public class Star extends Sprite {
     }
 
     @Override
-    public void resize(Rect wordBounds) {
-        this.worldBounds = wordBounds;
-        float posX = Rnd.nextFloat(wordBounds.getLeft(), wordBounds.getRight());
-        float posY = Rnd.nextFloat(wordBounds.getBottom(), wordBounds.getTop());
+    public void resize(Rect worldBounds) {
+        this.worldBounds = worldBounds;
+        float posX = Rnd.nextFloat(worldBounds.getLeft(), worldBounds.getRight());
+        float posY = Rnd.nextFloat(worldBounds.getBottom(), worldBounds.getTop());
         pos.set(posX, posY);
     }
 }
