@@ -63,7 +63,7 @@ public abstract class Ship extends Sprite {
     }
 
     public void damage(int damage) {
-        hp -= damage;
+        this.hp -= damage;
         if (hp <= 0) {
             destroy();
         }
