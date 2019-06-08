@@ -14,6 +14,7 @@ import ru.star.pool.ExplosionPool;
 public class MainShip extends Ship {
 
     private static final int INVALID_POINTER = -1;
+    private static final int HP = 100;
 
     private boolean pressedLeft;
     private boolean pressedRight;
@@ -23,30 +24,24 @@ public class MainShip extends Ship {
 
     public MainShip(TextureAtlas atlas, BulletPool bulletPool, ExplosionPool explosionPool, Sound bulletSound) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
-        this.bulletRegion = atlas.findRegion("bulletMainShip");
-
         this.bulletPool = bulletPool;
         this.explosionPool = explosionPool;
-        this.bulletSound = bulletSound;
-
-        setBaseSettings();
-    }
-
-    public void setBaseSettings(){
-
+        this.bulletRegion = atlas.findRegion("bulletMainShip");
         v = new Vector2();
         v0 = new Vector2(0.5f, 0);
         bulletV = new Vector2(0, 0.5f);
         this.reloadInterval = 0.2f;
         this.bulletHeight = 0.01f;
         this.damage = 1;
-        this.flushDestroy();
-
-        this.pos.x = 0f;
-
-        this.hp = 10;
+        this.bulletSound = bulletSound;
+        this.hp = HP;
     }
 
+    public void startNewGame() {
+        this.hp = HP;
+        this.pos.x = worldBounds.pos.x;
+        flushDestroy();
+    }
 
     @Override
     public void resize(Rect worldBounds) {
@@ -157,6 +152,16 @@ public class MainShip extends Ship {
                 || bullet.getBottom() > pos.y
                 || bullet.getTop() < getBottom()
                 );
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        pressedLeft = false;
+        pressedRight = false;
+        leftPointer = INVALID_POINTER;
+        rightPointer = INVALID_POINTER;
+        stop();
     }
 
     private void moveRight() {

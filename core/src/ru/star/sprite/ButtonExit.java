@@ -14,9 +14,9 @@ public class ButtonExit extends ScaledTouchUpButton {
     }
 
     @Override
-    public void resize(Rect wordBounds) {
-        setLeft(wordBounds.getLeft() + 0.03f);
-        setBottom(wordBounds.getBottom() + 0.03f);
+    public void resize(Rect worldBounds) {
+        setLeft(worldBounds.getLeft() + 0.03f);
+        setBottom(worldBounds.getBottom() + 0.03f);
     }
 
     @Override
