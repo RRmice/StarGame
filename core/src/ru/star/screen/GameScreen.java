@@ -21,6 +21,7 @@ import ru.star.sprite.Bullet;
 import ru.star.sprite.Enemy;
 import ru.star.sprite.Explosion;
 import ru.star.sprite.MainShip;
+import ru.star.sprite.MassageNewGame;
 import ru.star.sprite.MessageGameOver;
 import ru.star.sprite.Star;
 import ru.star.utils.EnemyGenerator;
@@ -52,6 +53,7 @@ public class GameScreen extends BaseScreen {
     private EnemyGenerator enemyGenerator;
 
     private MessageGameOver messageGameOver;
+    private MassageNewGame massageNewGame;
 
     @Override
     public void show() {
@@ -75,6 +77,7 @@ public class GameScreen extends BaseScreen {
         enemyPool = new EnemyPool(bulletPool, explosionPool, bulletSound, worldBounds, mainShip);
         enemyGenerator = new EnemyGenerator(worldBounds, enemyPool, atlas);
         messageGameOver = new MessageGameOver(atlas);
+        massageNewGame = new MassageNewGame(atlas);
         state = State.PLAYING;
     }
 
@@ -180,6 +183,7 @@ public class GameScreen extends BaseScreen {
             enemyPool.drawActiveSprites(batch);
         } else if (state == State.GAME_OVER) {
             messageGameOver.draw(batch);
+            massageNewGame.draw(batch);
         }
         batch.end();
     }
@@ -236,6 +240,24 @@ public class GameScreen extends BaseScreen {
         if (state == State.PLAYING) {
             mainShip.touchUp(touch, pointer);
         }
+        if(state == State.GAME_OVER){
+            if (massageNewGame.isMe(touch)){
+
+                startNewGame();
+
+            }
+        }
         return false;
+    }
+
+    private void startNewGame(){
+
+        mainShip.setBaseSettings();
+        bulletPool.flushAllActivitySprite();
+        enemyPool.flushAllActivitySprite();
+        explosionPool.flushAllActivitySprite();
+
+        state = State.PLAYING;
+
     }
 }
