@@ -14,7 +14,7 @@ import ru.star.pool.ExplosionPool;
 public class MainShip extends Ship {
 
     private static final int INVALID_POINTER = -1;
-    private static final int HP = 1;
+    private static final int HP = 100;
 
     private boolean pressedLeft;
     private boolean pressedRight;
