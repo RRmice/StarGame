@@ -22,11 +22,11 @@ import ru.star.sprite.Background;
 import ru.star.sprite.Bullet;
 import ru.star.sprite.ButtonNewGame;
 import ru.star.sprite.Enemy;
-import ru.star.sprite.Explosion;
 import ru.star.sprite.MainShip;
 import ru.star.sprite.MessageGameOver;
 import ru.star.sprite.Star;
 import ru.star.utils.EnemyGenerator;
+import ru.star.utils.ScoreReader;
 
 public class GameScreen extends BaseScreen {
 
@@ -34,6 +34,8 @@ public class GameScreen extends BaseScreen {
     private static final String HP = "HP: ";
     private static final String LEVEL = "Level: ";
     private static final int STAR_COUNT = 64;
+
+    private static final String[] TOP = {"Top 1: ", "Top 2: ", "Top 3: "};
 
     private enum State { PLAYING, PAUSE, GAME_OVER }
 
@@ -66,6 +68,11 @@ public class GameScreen extends BaseScreen {
     private StringBuilder sbHP;
     private StringBuilder sbLevel;
 
+    private StringBuilder topScore;
+
+    private StringBuffer[] score;
+    private ScoreReader scoreReader;
+
     @Override
     public void show() {
         super.show();
@@ -95,6 +102,13 @@ public class GameScreen extends BaseScreen {
         sbFrags = new StringBuilder();
         sbHP = new StringBuilder();
         sbLevel = new StringBuilder();
+
+
+        scoreReader = new ScoreReader();
+        score = scoreReader.getArrayScore();
+
+        topScore = new StringBuilder();
+
         state = State.PLAYING;
     }
 
@@ -154,6 +168,11 @@ public class GameScreen extends BaseScreen {
                 enemy.destroy();
                 mainShip.damage(mainShip.getHp());
                 state = State.GAME_OVER;
+
+                if (scoreReader.inNewTop(this.frags)){
+                    score = scoreReader.getArrayScore();
+                }
+
             }
             for (Bullet bullet : bulletList) {
                 if (bullet.getOwner() != mainShip || bullet.isDestroyed()) {
@@ -177,6 +196,11 @@ public class GameScreen extends BaseScreen {
                bullet.destroy();
                if (mainShip.isDestroyed()) {
                    state = State.GAME_OVER;
+
+                   if (scoreReader.inNewTop(this.frags)){
+                       score = scoreReader.getArrayScore();
+                   }
+
                }
            }
         }
@@ -204,6 +228,7 @@ public class GameScreen extends BaseScreen {
         } else if (state == State.GAME_OVER) {
             messageGameOver.draw(batch);
             buttonNewGame.draw(batch);
+            printScore();
         }
         printInfo();
         batch.end();
@@ -216,6 +241,21 @@ public class GameScreen extends BaseScreen {
         font.draw(batch, sbHP.append(HP).append(mainShip.getHp()), worldBounds.pos.x, worldBounds.getTop(), Align.center);
         sbLevel.setLength(0);
         font.draw(batch, sbLevel.append(LEVEL).append(enemyGenerator.getLevel()), worldBounds.getRight(), worldBounds.getTop(), Align.right);
+    }
+
+    private void printScore(){
+
+        float startPos = 0.2f;
+
+        for (int i = 0; i < score.length; i++){
+            topScore.setLength(0);
+            font.draw(batch, topScore.append(TOP[i]).append(score[i]),worldBounds.pos.x,
+                    worldBounds.getTop() - (startPos + (i * 0.05f)), Align.center);
+
+        }
+
+
+
     }
 
     @Override
@@ -232,6 +272,9 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void dispose() {
+
+        scoreReader.WriteRecord();
+
         bg.dispose();
         atlas.dispose();
         bulletPool.dispose();
